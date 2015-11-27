@@ -41,18 +41,8 @@ AD9850 ad(W_CLK_PIN, FQ_UD_PIN, DATA_PIN); // w_clk, fq_ud, d7
 //   Low Performance:  neither pin has interrupt capability
 Encoder myEnc(2, 3);
 
-#define NUMFLAKES 10
-#define XPOS 0
-#define YPOS 1
-#define DELTAY 2
-
-
-#define LOGO16_GLCD_HEIGHT 16
-#define LOGO16_GLCD_WIDTH  16
-
 long oldPosition  = -999;
 uint32_t frequency = 4000000;
-
 
 void update_frequency(uint32_t freq)
 {
