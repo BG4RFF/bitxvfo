@@ -1,0 +1,5 @@
+Install and make:
+
+sudo apt-get install arduino-mk
+make
+make upload
