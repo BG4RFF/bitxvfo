@@ -15,6 +15,12 @@ const int FQ_UD_PIN = 11;
 const int DATA_PIN = 12;
 const int RESET_PIN = 13;
 
+const int ENC_PIN1 = 2;
+const int ENC_PIN2 =3;
+
+const int IF_FREQ = 10000000;
+const int INIT_FREQ = 4000000;
+
 // Software SPI (slower updates, more flexible pin options):
 // pin 7 - Serial clock out (SCLK)
 // pin 6 - Serial data out (DIN)
@@ -39,10 +45,10 @@ AD9850 ad(W_CLK_PIN, FQ_UD_PIN, DATA_PIN); // w_clk, fq_ud, d7
 //   Best Performance: both pins have interrupt capability
 //   Good Performance: only the first pin has interrupt capability
 //   Low Performance:  neither pin has interrupt capability
-Encoder myEnc(2, 3);
+Encoder myEnc(ENC_PIN1, ENC_PIN2);
 
 long oldPosition  = -999;
-uint32_t frequency = 4000000;
+uint32_t frequency = INIT_FREQ;
 
 void update_frequency(uint32_t freq)
 {
@@ -68,7 +74,7 @@ void loop() {
     
     frequency = 4300000 + newPosition*50;
     ad.setfreq(frequency);
-    update_frequency(frequency + 10000000);
+    update_frequency(frequency + IF_FREQ);
     
     Serial.println(newPosition);
   }
