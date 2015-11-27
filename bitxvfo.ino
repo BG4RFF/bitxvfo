@@ -4,22 +4,34 @@
 #include <AD9850.h>
 #include <Encoder.h>
 
-const int SCLK_PIN = 9;
-const int DIN_PIN = 8;
-const int DC_PIN = 7;
-const int CS_PIN = 6;
-const int RST_PIN = 5;
+//const int SCLK_PIN   = 7;
+//const int DIN_PIN    = 6;
+//const int DC_PIN     = 5;
+//const int CS_PIN     = 4;
+//const int RST_PIN    = 12;
 
-const int W_CLK_PIN = 10;
-const int FQ_UD_PIN = 11;
-const int DATA_PIN = 12;
-const int RESET_PIN = 13;
+//const int W_CLK_PIN  = 8;
+//const int FQ_UD_PIN  = 9;
+//const int DATA_PIN   = 10;
+//const int RESET_PIN  = 13;
 
-const int ENC_PIN1 = 2;
-const int ENC_PIN2 =3;
+const int SCLK_PIN   = 9;
+const int DIN_PIN    = 8;
+const int DC_PIN     = 7;
+const int CS_PIN     = 6;
+const int RST_PIN    = 5;
 
-const int IF_FREQ = 10000000;
-const int INIT_FREQ = 4000000;
+const int W_CLK_PIN  = 10;
+const int FQ_UD_PIN  = 11;
+const int DATA_PIN   = 12;
+const int RESET_PIN  = 13;
+
+const int ENC_PIN1   = 2;
+const int ENC_PIN2   = 3;
+
+const long IF_FREQ   = 10000000L;
+const long INIT_FREQ = 4000000L;
+const long STEP_FREQ = 50;
 
 // Software SPI (slower updates, more flexible pin options):
 // pin 7 - Serial clock out (SCLK)
@@ -72,7 +84,7 @@ void loop() {
   if (newPosition != oldPosition) {
     oldPosition = newPosition;
     
-    frequency = 4300000 + newPosition*50;
+    frequency = INIT_FREQ + newPosition * STEP_FREQ;
     ad.setfreq(frequency);
     update_frequency(frequency + IF_FREQ);
     
