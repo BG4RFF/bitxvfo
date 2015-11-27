@@ -62,7 +62,7 @@ void setup()   {
 }
 
 void loop() {
-/*  long newPosition = myEnc.read();
+  long newPosition = myEnc.read();
   if (newPosition != oldPosition) {
     oldPosition = newPosition;
     
@@ -72,6 +72,4 @@ void loop() {
     
     Serial.println(newPosition);
   }
-*/
- ad.setfreq(30000000);  
 }
