@@ -1,0 +1,6 @@
+[submodule "libs/Adafruit-GFX-Library"]
+	path = libs/Adafruit-GFX-Library
+	url = https://github.com/adafruit/Adafruit-GFX-Library.git
+[submodule "libs/Adafruit-PCD8544-Nokia-5110-LCD-library"]
+	path = libs/Adafruit-PCD8544-Nokia-5110-LCD-library
+	url = https://github.com/adafruit/Adafruit-PCD8544-Nokia-5110-LCD-library.git
