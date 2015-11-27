@@ -1,5 +1,7 @@
 Install and make:
 
+git submodule update --init
+
 sudo apt-get install arduino-mk
 make
 make upload
