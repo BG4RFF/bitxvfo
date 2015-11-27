@@ -1,6 +1,6 @@
 #OARD_TAG    = uno
 
-BOARD_TAG     = mega2560
+BOARD_TAG     = leonardo 
 MONITOR_PORT  = /dev/ttyACM0
 
 USER_LIB_PATH = libs/
