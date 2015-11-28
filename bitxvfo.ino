@@ -51,7 +51,7 @@ Adafruit_PCD8544 display = Adafruit_PCD8544(SCLK_PIN, DIN_PIN, DC_PIN, CS_PIN, R
 // Note with hardware SPI MISO and SS pins aren't used but will still be read
 // and written to during SPI transfer.  Be careful sharing these pins!
 
-AD9850 ad(W_CLK_PIN, FQ_UD_PIN, DATA_PIN); // w_clk, fq_ud, d7
+AD9850 dds(W_CLK_PIN, FQ_UD_PIN, DATA_PIN); // w_clk, fq_ud, d7
 
 // Change these two numbers to the pins connected to your encoder.
 //   Best Performance: both pins have interrupt capability
@@ -64,8 +64,10 @@ uint32_t frequency = INIT_FREQ;
 
 void update_frequency(uint32_t freq)
 {
+  float frequency = ((float)freq + IF_FREQ) / 1000000;
+  dds.setfreq(freq);
   display.clearDisplay();   // clears the screen and buffer
-  display.print(((float)freq)/1000000,6);
+  display.print(frequency, 5);
   display.println("MHz");
   display.display();
 }
@@ -76,7 +78,7 @@ void setup()   {
   display.setContrast(60);
   display.clearDisplay(); 
   
-  update_frequency(30000000);
+  update_frequency(INIT_FREQ);
 }
 
 void loop() {
@@ -85,9 +87,9 @@ void loop() {
     oldPosition = newPosition;
     
     frequency = INIT_FREQ + newPosition * STEP_FREQ;
-    ad.setfreq(frequency);
-    update_frequency(frequency + IF_FREQ);
+
+    update_frequency(frequency);
     
-    Serial.println(newPosition);
+    //Serial.println(newPosition);
   }
 }
