@@ -64,21 +64,6 @@ AD9850 dds(W_CLK_PIN, FQ_UD_PIN, DATA_PIN); // w_clk, fq_ud, d7
 //   Low Performance:  neither pin has interrupt capability
 Encoder myEnc(ENC_PIN1, ENC_PIN2);
 
-long oldPosition  = -999;
-uint32_t frequency = INIT_FREQ;
-long STEP_FREQ = 50;
-long step_multiplier = 1;
-
-void update_frequency(uint32_t freq)
-{
-    float frequency = ((float)freq + IF_FREQ) / MHZ;
-    dds.setfreq(freq);
-    display.clearDisplay();   // clears the screen and buffer
-    display.print(frequency, 5);
-    display.println("MHz");
-    display.display();
-}
-
 typedef enum {
     KEY_INITIAL,
     KEY_PRESSED,
@@ -92,6 +77,20 @@ typedef enum {
     KEY1_RESSED,
     KEY1_LONG_PRESSED,
 }key_event_t;
+
+long oldPosition  = -999;
+long frequency = INIT_FREQ;
+long STEP_FREQ = 100;
+
+void update_frequency(long freq)
+{
+    float frequency = ((float)freq + IF_FREQ) / MHZ;
+    dds.setfreq(freq);
+    display.clearDisplay();   // clears the screen and buffer
+    display.print(frequency, 5);
+    display.println("MHz");
+    display.display();
+}
 
 void keypad_poll()
 {
@@ -130,9 +129,8 @@ void keypad_poll()
 
                 //KEY1_RESSED
                 Serial.println("KEY1_RESSED\n");
-                step_multiplier *= 10;
-                if (step_multiplier > 10000) step_multiplier = 1;
-                STEP_FREQ = 50 * step_multiplier;
+                STEP_FREQ *= 10;
+                if (STEP_FREQ > 1000000) STEP_FREQ = 100;
             }
             else
             {
@@ -162,16 +160,19 @@ void setup()
 
 void loop()
 {
-    long newPosition = myEnc.read();
-    if (newPosition != oldPosition)
+    long position = myEnc.read() / 2;
+    if (position != 0)
     {
-          oldPosition = newPosition;
+        myEnc.write(0);
 
-          frequency = INIT_FREQ + newPosition * STEP_FREQ;
+        if( frequency + position * STEP_FREQ > 0)
+        {
+            frequency += position * STEP_FREQ;
+        }
 
-          update_frequency(frequency);
+        update_frequency(frequency);
 
-          //Serial.println(newPosition);
+        //Serial.println(position);
     }
 
     keypad_poll();
