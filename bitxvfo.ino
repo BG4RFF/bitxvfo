@@ -71,12 +71,12 @@ long step_multiplier = 1;
 
 void update_frequency(uint32_t freq)
 {
-  float frequency = ((float)freq + IF_FREQ) / MHZ;
-  dds.setfreq(freq);
-  display.clearDisplay();   // clears the screen and buffer
-  display.print(frequency, 5);
-  display.println("MHz");
-  display.display();
+    float frequency = ((float)freq + IF_FREQ) / MHZ;
+    dds.setfreq(freq);
+    display.clearDisplay();   // clears the screen and buffer
+    display.print(frequency, 5);
+    display.println("MHz");
+    display.display();
 }
 
 typedef enum {
@@ -147,30 +147,32 @@ void keypad_poll()
     }
 }
 
-void setup()   {
-  pinMode(SHIFT_PIN, INPUT);      // set pin to input
-  digitalWrite(SHIFT_PIN, HIGH);  // turn on pull-up resistors
+void setup()
+{
+    pinMode(SHIFT_PIN, INPUT);      // set pin to input
+    digitalWrite(SHIFT_PIN, HIGH);  // turn on pull-up resistors
 
-  Serial.begin(9600);
-  display.begin();
-  display.setContrast(60);
-  display.clearDisplay(); 
-  
-  update_frequency(INIT_FREQ);
+    Serial.begin(9600);
+    display.begin();
+    display.setContrast(60);
+    display.clearDisplay();
+
+    update_frequency(INIT_FREQ);
 }
 
-void loop() {
-  long newPosition = myEnc.read();
-  if (newPosition != oldPosition) {
-    oldPosition = newPosition;
-    
-    frequency = INIT_FREQ + newPosition * STEP_FREQ;
+void loop()
+{
+    long newPosition = myEnc.read();
+    if (newPosition != oldPosition)
+    {
+          oldPosition = newPosition;
 
-    update_frequency(frequency);
-    
-    //Serial.println(newPosition);
-  }
+          frequency = INIT_FREQ + newPosition * STEP_FREQ;
 
-  keypad_poll();
+          update_frequency(frequency);
 
+          //Serial.println(newPosition);
+    }
+
+    keypad_poll();
 }
